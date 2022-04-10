@@ -140,15 +140,12 @@ function moveBlob(blob) {
 function loop() {
   blobs.forEach(moveBlob);
 
-  var dataToSendToGPU = new Float32Array(3 * blobs.length);
-  for (var i = 0; i < blobs.length; i++) {
-    var baseIndex = 3 * i;
-    var mb = blobs[i];
-    dataToSendToGPU[baseIndex + 0] = mb.x;
-    dataToSendToGPU[baseIndex + 1] = mb.y;
-    dataToSendToGPU[baseIndex + 2] = mb.r;
-  }
-  gl.uniform3fv(blobsHandle, dataToSendToGPU);
+  const blobData = blobs.map(blob => {
+    return [blob.x, blob.y, blob.r];
+  });
+  const blobDataFlat = new Float32Array([].concat.apply([], blobData));
+
+  gl.uniform3fv(blobsHandle, blobDataFlat);
   gl.uniform3fv(color1Handle, color1);
   gl.uniform3fv(color2Handle, color2);
   gl.uniform3fv(bgColorHandle, bgColor);
@@ -197,12 +194,8 @@ function getFragmentShader() {
     sum += (radius*radius) / (dx * dx + dy * dy);
   }
 
-  // vec3 start_color = vec3(1.0, x / WIDTH, y / HEIGHT);
-
   if (sum >= 2.0 - float(${blobStickiness})) {
-    // float mixValue = distance(st, vec2(x, x));
     vec3 color = mix(color2, color1, y / HEIGHT);
-
     gl_FragColor = vec4(color, 1.0);
     return;
   }
