@@ -1,3 +1,5 @@
+// based on https://codepen.io/TC5550/pen/WNNWoaO
+
 const canvas = document.getElementById("blob-canvas");
 var width = canvas.width = window.innerWidth * 0.95;
 var height = canvas.height = window.innerHeight * 0.95;
