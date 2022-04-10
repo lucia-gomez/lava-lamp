@@ -1,0 +1,121 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: var(--bg);
+    }
+
+    h1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0px;
+      font-size: 80px;
+      color: var(--color);
+      mix-blend-mode: soft-light;
+      text-align: center;
+    }
+
+    #toggle-controls {
+      margin: 0;
+      color: #006aff;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    #control-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 20px;
+    }
+
+    #controls {
+      display: var(--showControls);
+      margin-top: 15px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .control-row label {
+      padding-left: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="control-panel">
+    <p id='toggle-controls' onclick="toggleControls()">Hide controls</p>
+    <div id="controls">
+      <div class="control-row">
+        <input type="range" id="num-blobs" name="num-blobs" min="2" max="50" value="10">
+        <label for="volume">Blobs</label>
+      </div>
+      <div class="control-row">
+        <input type="range" id="min-blob-size" name="min-blob-size" min="5" max="100" value="10">
+        <label for="min-blob-size">Min blob size</label>
+      </div>
+      <div class="control-row">
+        <input type="range" id="max-blob-size" name="max-blob-size" min="5" max="80" value="60">
+        <label for="max-blob-size">Max blob size</label>
+      </div>
+      <div class="control-row">
+        <input type="range" id="blob-speed" name="blob-speed" min="1" max="5" value="2">
+        <label for="blob-speed">Blob speed</label>
+      </div>
+      <div class="control-row">
+        <input type="range" id="blob-stickiness" name="blob-stickiness" min="-1.0" max="1.5" value="1.0" step="0.05">
+        <label for="blob-stickiness">Blob stickiness</label>
+      </div>
+      <div class="control-row">
+        <input type="color" id="color1" name="color2" value="#e66465">
+        <label for="color1">Color 1</label>
+      </div>
+      <div class="control-row">
+        <input type="color" id="color2" name="color2" value="#5235a1">
+        <label for="color2">Color 2</label>
+      </div>
+      <div class="control-row">
+        <input type="color" id="bg-color" name="bg-color" value="#ebebeb" oninput="setBgColor(this.value)">
+        <label for="bg-color">Background color</label>
+      </div>
+      <div class="control-row">
+        <input type="color" id="text-color" name="text-color" value="#000000" oninput="setTextColor(this.value)">
+        <label for="text-color">Text color</label>
+      </div>
+    </div>
+  </div>
+  <canvas id="blob-canvas"></canvas>
+  <h1>Lava Lamp</h1>
+  <script>
+    var showControls = true;
+    document.documentElement.style.setProperty('--showControls', showControls ? 'block' : 'none');
+    document.documentElement.style.setProperty('--bg', '#ebebeb');
+    document.documentElement.style.setProperty('--color', '#000000');
+
+    function setBgColor(val) {
+      document.documentElement.style.setProperty('--bg', val);
+    }
+
+    function setTextColor(val) {
+      document.documentElement.style.setProperty('--color', val);
+    }
+
+    function toggleControls() {
+      showControls = !showControls;
+      document.documentElement.style.setProperty('--showControls', showControls ? 'block' : 'none');
+      document.getElementById('toggle-controls').innerHTML = showControls ? 'Hide controls' : 'Show controls';
+    }
+  </script>
+  <script src="blobs.js"></script>
+</body>
+
+</html>
